@@ -3,6 +3,11 @@ import { AuthPage } from "../pages/authPage.page";
 import { ConfirmationCodePage } from "../pages/confirmationCode.page"
 import { CreatePaymentPage } from "../pages/createPaymentPage.page";
 
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
 const baseUrl = process.env.BASE_URL as string
 
 const user = {
@@ -21,7 +26,7 @@ test.describe(
         const confirmationCodePage = new ConfirmationCodePage(page);
         const createPaymentPage = new CreatePaymentPage(page);
 
-        await test.step('Авториазция', async () => {
+        await test.step('Переход на страницу приложения', async () => {
             await page.goto(baseUrl);
         })
 
@@ -31,14 +36,14 @@ test.describe(
 
         await test.step('Авторизуемся используя email пользователя', async () => {
             await authPage.fillEmail(user.login);
-            await authPage.isNextButtonEnabled();
+            await expect(authPage.nextButton).toBeEnabled();
             await authPage.clickNext();
             await confirmationCodePage.waitForPageLoad();
             await confirmationCodePage.fillCode(code);
-            await confirmationCodePage.clickConfirm;
             await authPage.fillPassword(user.password);
-            await authPage.isLoginButtonEnabled();
+            await expect(authPage.loginButton).toBeEnabled();
             await authPage.clickLogin();
+            await expect(createPaymentPage.title).toBeVisible();
         })
 
         await test.step('Проверка минимальной суммы перевода', async () => {

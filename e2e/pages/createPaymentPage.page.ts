@@ -3,6 +3,9 @@ import { Page, Locator } from '@playwright/test';
 export class CreatePaymentPage {
   readonly page: Page;
 
+  // Заголовок страницы
+  readonly title:Locator
+
   // Поле "К оплате"
   readonly fromAmountInput: Locator;
   readonly fromCurrencySelect: Locator;
@@ -26,6 +29,9 @@ export class CreatePaymentPage {
   constructor(page: Page) {
     this.page = page;
 
+    // Заголовок страницы
+    this.title = page.getByRole('heading', { name: 'Главная' })
+
     // Поле "К оплате"
     const fromWrapper = page.locator('[data-cy="send--input-and-select"]');
     this.fromAmountInput = fromWrapper.locator('input.el-input__inner');
@@ -40,7 +46,7 @@ export class CreatePaymentPage {
     this.toCurrencyOptions = toWrapper.locator('.el-select-dropdown:has-text("USD")');
 
     // Кнопка "Продолжить"
-    this.continueButton = page.getByTestId('[data-cy="btn--continue"]');
+    this.continueButton = page.locator('[data-cy="btn--continue"]');
 
     // Модальное окно верификации
     this.verificationModal = page.locator('.el-overlay .el-dialog:has-text("Требуется проверка")');

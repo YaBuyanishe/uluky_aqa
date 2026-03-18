@@ -29,8 +29,7 @@ export class ConfirmationCodePage {
       await inputs[i].fill(code[i]);
     }
   }
-
-
+  
     // Клик по кнопке подтверждения
   async clickConfirm() {
     await this.confirmButton.click();

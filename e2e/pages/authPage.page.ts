@@ -18,12 +18,6 @@ export class AuthPage {
     this.pageTitle = page.getByRole('heading', { name: 'Учетная запись' });
   }
 
-    // Переход на страницу авторизации
-  async goto(url: string = './') {
-    await this.page.goto(url);
-    await this.waitForPageLoad();
-  }
-
     // Ожидание загрузки страницы
   async waitForPageLoad() {
     await this.pageTitle.waitFor({ state: 'visible', timeout: 5000 });
