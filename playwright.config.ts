@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
-import { resolve } from 'path';
+import path from 'path';
 
-dotenv.config({ path: resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, 'e2e/.env') });
 
 /**
  * Read environment variables from file.
@@ -30,7 +30,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'https://app.stage.p.uluky.com/auth',
+    baseURL: process.env.BASE_URL || 'https://app.stage.p.uluky.com/auth',
     testIdAttribute: 'data-cy',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
