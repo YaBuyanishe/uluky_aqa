@@ -1,17 +1,16 @@
 import { expect, test } from "@playwright/test";
-import { BasePage } from "../pages/basePage.page";
 import { AuthPage } from "../pages/authPage.page";
 import { ConfirmationCodePage } from "../pages/confirmationCode.page"
 import { CreatePaymentPage } from "../pages/createPaymentPage.page";
 
-const baseUrl = ''
+const baseUrl = process.env.BASE_URL as string
 
 const user = {
-    login: '',
-    password: ''
+    login: process.env.LOGIN as string,
+    password: process.env.PASSWORD as string
 }
 
-const code = '000000'
+const code = process.env.CODE as string
 
 test.describe(
     'Test Case 1 - Home Page -> Create Payment -> Minimum payment amount', 

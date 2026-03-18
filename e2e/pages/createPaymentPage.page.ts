@@ -3,18 +3,18 @@ import { Page, Locator } from '@playwright/test';
 export class CreatePaymentPage {
   readonly page: Page;
 
-  // Поле «К оплате» (From amount)
+  // Поле "К оплате"
   readonly fromAmountInput: Locator;
   readonly fromCurrencySelect: Locator;
   readonly fromCurrencyOptions: Locator;
   readonly fromAmountHint: Locator;
 
-  // Поле «К получению» (To be received)
+  // Поле "К получению"
   readonly toAmountInput: Locator;
   readonly toCurrencySelect: Locator;
   readonly toCurrencyOptions: Locator;
 
-  // Кнопка «Продолжить»
+  // Кнопка "Продолжить"
   readonly continueButton: Locator;
 
   // Модальное окно верификации
@@ -22,7 +22,6 @@ export class CreatePaymentPage {
   readonly verificationModalSkip: Locator;
   readonly skipVerificationButtonFirst: Locator;
   readonly skipVerificationButtonSecond: Locator;
-  readonly proceedVerificationButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -31,24 +30,23 @@ export class CreatePaymentPage {
     const fromWrapper = page.locator('[data-cy="send--input-and-select"]');
     this.fromAmountInput = fromWrapper.locator('input.el-input__inner');
     this.fromCurrencySelect = fromWrapper.locator('.el-select');
-    this.fromCurrencyOptions = page.locator('.el-select-dropdown:has-text("RUB")');
+    this.fromCurrencyOptions = fromWrapper.locator('.el-select-dropdown:has-text("RUB")');
     this.fromAmountHint = fromWrapper.getByTestId('[data-cy="hint-message"]')
 
     // Поле "К получению"
     const toWrapper = page.locator('[data-cy="receive--input-and-select"]');
     this.toAmountInput = toWrapper.locator('input.el-input__inner');
     this.toCurrencySelect = toWrapper.locator('.el-select');
-    this.toCurrencyOptions = page.locator('.el-select-dropdown:has-text("USD")');
+    this.toCurrencyOptions = toWrapper.locator('.el-select-dropdown:has-text("USD")');
 
     // Кнопка "Продолжить"
-    this.continueButton = page.locator('[data-cy="btn--continue"]');
+    this.continueButton = page.getByTestId('[data-cy="btn--continue"]');
 
     // Модальное окно верификации
     this.verificationModal = page.locator('.el-overlay .el-dialog:has-text("Требуется проверка")');
     this.verificationModalSkip = page.locator('.el-overlay .el-dialog:has-text("Пропустить проверку")');
     this.skipVerificationButtonFirst = this.verificationModal.locator('[data-cy="btn--secondary"]:has-text("Пропустить в этот раз")');
     this.skipVerificationButtonSecond = this.verificationModalSkip.locator('[data-cy="btn--secondary"]:has-text("Пропустить")');
-    this.proceedVerificationButton = this.verificationModal.locator('[data-cy="btn--primary"]:has-text("Пройти проверку")');
   }
 
   // Заполнить сумму отправления
@@ -73,7 +71,7 @@ export class CreatePaymentPage {
     return await this.continueButton.isEnabled();
   }
 
-  // Проверяем наличие хинта под инпутом "К оплате"
+  // Проверить наличие хинта под инпутом "К оплате"
   async getFromAmountHintText(): Promise<string | null> {
     const wrapper = this.page.locator('.control-wrapper__wrapper')
       .filter({ has: this.page.locator('[data-cy="send--input-and-select"]') });
@@ -99,11 +97,6 @@ export class CreatePaymentPage {
   async skipVerification() {
     await this.skipVerificationButtonFirst.click();
     await this.skipVerificationButtonSecond.click();
-  }
-
-  // Пройти верификацию
-  async proceedVerification() {
-    await this.proceedVerificationButton.click();
   }
 
   // Проверить, отображается ли модальное окно
